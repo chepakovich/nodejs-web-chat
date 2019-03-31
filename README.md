@@ -8,7 +8,7 @@ In case of user inactivity, the app sends random messages to the chat UI every 3
 
 ## Instructions on installation and running
 - clone the repository
-- run "npm install" command in the terminal while in the project foldeer (there is only one dependency to install - socket.io)
+- run "npm install" command in the terminal while in the project folder (there is only one dependency to install - socket.io)
 - run "node app.js" command in the terminal
 - the app will be running on http://localhost:3000/
 
