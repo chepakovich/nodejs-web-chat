@@ -14,10 +14,10 @@ In case of user inactivity, the app sends random messages to the chat UI every 3
 
 Here is a screenshot of the login UI:
 <p align="center">
-  <img src="screenshot-1.png"/>
+  <img src="screenshot-1.png" width="320"/>
 </p>
 
 And here is a screenshot the chat:
 <p align="center">
-  <img src="screenshot-2.png"/>
+  <img src="screenshot-2.png" width="320"/>
 </p>
