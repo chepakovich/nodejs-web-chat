@@ -3,7 +3,7 @@
 ## Description of the application
 The web chat application is built using Node.js and WebSocket. It has a skeleton automatic reply functionality that could be significantly expanded to allow for robotic chat interactions with users (providing canned answers and the like).
 
-There is a login UI, but no user authentication (as the username and password are transmitted to the back end, it could be adapted to an existing authentication functionality of the host app). So, any combination and a username and password will suffice to access the chat app.
+There is a login UI, but no user authentication (as the username and password are transmitted to the back end, it could be adapted to an existing authentication functionality of the host app). So, any combination of username and password will suffice to access the chat app.
 
 When a user's post contains the word "weather", an asynchronous API call is made from the back end to openweathermap.org to get current weather conditions for the user geographical coordinates (user should allow access to his location for this app in the browser). Once the weather data is received, it is pushed to the chat UI.
 
