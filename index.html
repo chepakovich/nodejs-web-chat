@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Web Chat Example</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+
+<body>
+
+  <h1>Web Chat Example</h1>
+  <p>To open a popup chat window, please click on the chat image at the bottom of the page.</p>
+
+  <img src="chat.png" alt="start chat" class="open-img" onclick="openLoginForm()">
+
+  <div class="chat-popup" id="loginForm">
+      <form id="login" class="form-container">
+        <h2>Login</h2>
+        <label for="username"><stong>Username</stong></label>
+          <input type="text" id="username" name="username" />
+        <label for="password"><stong>Password</stong></label>
+          <input type="password" id="password" name="password" />       
+        <button type="submit" class="btn">Login</button>
+        <button type="button" class="btn cancel" onclick="closeLoginForm()">Cancel</button>
+      </form>
+    </div>
+
+  <div class="chat-popup" id="chatForm">
+    <form id="chat" class="form-container">
+      <h2>Chat</h2>
+      <div id="history"></div>   
+      <textarea placeholder="Type message..." id="msg_text" name="msg_text"></textarea>
+      <button type="submit" class="btn">Send</button>
+      <button type="button" class="btn cancel" onclick="closeChatForm()">Close</button>
+    </form>
+  </div>
+
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
+  <script>
+    function openLoginForm() {
+      document.getElementById("loginForm").style.display = "block";
+    }
+
+    function closeLoginForm() {
+      document.getElementById("loginForm").style.display = "none";
+    }
+
+    function openChatForm() {
+      document.getElementById("chatForm").style.display = "block";
+    }
+
+    function closeChatForm() {
+      document.getElementById("chatForm").style.display = "none";
+    }
+
+    let lat = '';
+    let long = '';
+
+    var socket = io.connect();
+
+    $("form#login").submit(function(e) {
+        e.preventDefault();
+        socket.emit("send message", "#username:"+$(this).find("#username").val()+"#password:"+$(this).find("#password").val(), function() {
+            $("form#chat #username").val("");
+        });
+    });
+
+    $("form#chat").submit(function(e) {
+        e.preventDefault();
+        socket.emit("send message", $(this).find("#msg_text").val()+"#latlong:"+lat+"&"+long, function() {
+            $("form#chat #msg_text").val("");
+        });
+    });
+  
+    socket.on("update", function(msg){
+      if (msg === "#userLogedIn#") {
+        closeLoginForm();
+        openChatForm();
+      } else if (msg === "#logOut#") {
+        closeChatForm();
+      } else if (msg.substring(0,8) === "#answer:" ) {
+        const lastMsg = $("<p class='answer' />").text(msg.substring(8));
+        $("#history").append(lastMsg);
+      } else {
+        const lastMsg = $("<p />").text(msg);
+        $("#history").append(lastMsg);
+      }
+    });
+
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+      } else {
+        console.log("Geolocation is not supported by this browser");
+      }
+    }
+    getLocation();
+
+    function showPosition(position) {
+      lat = position.coords.latitude;
+      long = position.coords.longitude;
+      console.log("LAT:", lat, "LONG:", long);
+    }
+  </script>
+
+</body>
+</html>
